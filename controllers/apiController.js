@@ -101,7 +101,7 @@ let notesMath2 = (req, res) => {
         ) 
     }
 
-    else if(req.query.adminKey !== process.env.ADMIN_KEY){
+    else if(req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "query": req.query,
