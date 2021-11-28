@@ -92,7 +92,7 @@ let notesMath1 = (req, res) => {
 
 //math2
 let notesMath2 = (req, res) => {
-    if(!req.query.adminKey || req.query.adminKey != process.env.ADMIN_KEY){
+    if(!req.query.adminKey){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
