@@ -66,7 +66,7 @@ let noteSubjects = (req, res) => {
 //math1
 let notesMath1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -129,7 +129,7 @@ let notesMath2 = (req, res) => {
 //phy1
 let notesPhy1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -155,7 +155,7 @@ let notesPhy1 = (req, res) => {
 //phy2
 let notesPhy2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -182,7 +182,7 @@ let notesPhy2 = (req, res) => {
 //chem1
 let notesChem1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -208,7 +208,7 @@ let notesChem1 = (req, res) => {
 //chem2
 let notesChem2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -234,7 +234,7 @@ let notesChem2 = (req, res) => {
 //pse
 let notesPse = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -260,7 +260,7 @@ let notesPse = (req, res) => {
 //cp
 let notesCp = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -286,7 +286,7 @@ let notesCp = (req, res) => {
 //ntf
 let notesNtf = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -312,7 +312,7 @@ let notesNtf = (req, res) => {
 //em
 let notesEm = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -338,7 +338,7 @@ let notesEm = (req, res) => {
 //bce
 let notesBce = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -364,7 +364,7 @@ let notesBce = (req, res) => {
 //am1
 let notesAm1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -391,7 +391,7 @@ let notesAm1 = (req, res) => {
 //am2
 let notesAm2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -417,7 +417,7 @@ let notesAm2 = (req, res) => {
 //ym1
 let notesYm1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -443,7 +443,7 @@ let notesYm1 = (req, res) => {
 //ym2
 let notesYm2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -469,7 +469,7 @@ let notesYm2 = (req, res) => {
 //fm1
 let notesFm1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -495,7 +495,7 @@ let notesFm1 = (req, res) => {
 //fm2
 let notesFm2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -521,7 +521,7 @@ let notesFm2 = (req, res) => {
 //wp1
 let notesWp1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -547,7 +547,7 @@ let notesWp1 = (req, res) => {
 //wp2
 let notesWp2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -573,7 +573,7 @@ let notesWp2 = (req, res) => {
 //stat
 let notesStat = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -599,7 +599,7 @@ let notesStat = (req, res) => {
 //feee
 let notesFeee = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -625,7 +625,7 @@ let notesFeee = (req, res) => {
 //marketing
 let notesMarket = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -651,7 +651,7 @@ let notesMarket = (req, res) => {
 //ttqc
 let notesTtqc = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -677,7 +677,7 @@ let notesTtqc = (req, res) => {
 //tp
 let notesTp = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -704,7 +704,7 @@ let notesTp = (req, res) => {
 //mp
 let notesMp = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -730,7 +730,7 @@ let notesMp = (req, res) => {
 //mmtf
 let notesMmtf = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -756,7 +756,7 @@ let notesMmtf = (req, res) => {
 //acm
 let notesAcm = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -782,7 +782,7 @@ let notesAcm = (req, res) => {
 //tqm
 let notesTqm = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -808,7 +808,7 @@ let notesTqm = (req, res) => {
 //fsd
 let notesFsd = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -834,7 +834,7 @@ let notesFsd = (req, res) => {
 //ace
 let notesAce = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -860,7 +860,7 @@ let notesAce = (req, res) => {
 //mic
 let notesMic = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -886,7 +886,7 @@ let notesMic = (req, res) => {
 //sss1
 let notesSss1 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -912,7 +912,7 @@ let notesSss1 = (req, res) => {
 //sss2
 let notesSss2 = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -938,7 +938,7 @@ let notesSss2 = (req, res) => {
 //wpp
 let notesWpp = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
@@ -964,7 +964,7 @@ let notesWpp = (req, res) => {
 //econo
 let notesEcono = (req, res) => {
 
-    if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
                 "Error": "🔴 Unauthorized Access !"
