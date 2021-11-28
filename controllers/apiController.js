@@ -93,6 +93,7 @@ let notesMath1 = (req, res) => {
 //math2
 let notesMath2 = (req, res) => {
 
+    /*
     if(!req.query.adminKey || req.query.adminKey !== process.env.ADMIN_KEY){
         return res.status(401).json(
             {
@@ -100,6 +101,7 @@ let notesMath2 = (req, res) => {
             }
         ) 
     }
+    */
 
     db.query(handleCountIncrementQuery("math2"),(err, result)=> {
         if(err){
@@ -1022,7 +1024,7 @@ module.exports = {
     notesTp: notesTp,
     notesMp: notesMp,
     notesMmtf: notesMmtf,
-    
+
     notesAcm: notesAcm,
     notesTqm: notesTqm,
     notesFsd: notesFsd,
