@@ -2,6 +2,15 @@ const express = require('express');
 
 const apiController = require('../controllers/apiController');
 
+//body parser
+var bodyParser = require('body-parser')
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+// create application/json parser
+var jsonParser = bodyParser.json()
+
 
 
 let router = express.Router();
@@ -85,6 +94,16 @@ let initWebRoutes = (app) => {
     //econo
     router.get("/notes/econo", apiController.notesEcono);
     
+
+    //missed_words
+    router.get("/missed", apiController.missedWords);
+    router.post("/missed",jsonParser,apiController.postMissedWords);
+
+
+    //users
+    router.get("/users", apiController.getAllUsers);
+    //users
+    router.post("/users", apiController.incrementUserCount);
 
     //404 route
     router.get("*", apiController.notFound);

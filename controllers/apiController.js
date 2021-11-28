@@ -13,6 +13,18 @@ let handleCountIncrementQuery = (subName) => {
     return `UPDATE subnamedb SET count = count + 1 WHERE sub_name = "${subName}"`
 }
 
+let handleMissedWordsEntryQuery = (word) => {
+    return `INSERT INTO missed_words_table VALUES(DEFAULT, '${word}')`
+}
+
+let showAllFromTable = (tableName) => {
+    return `SELECT * FROM ${tableName}`
+}
+
+let handleUserIncrementQuery = () => {
+    return `UPDATE new_user SET user_count = user_count + 1 WHERE id = 1`
+}
+
 
 let apiStatus = {
     endPoints: [
@@ -987,6 +999,76 @@ let notesEcono = (req, res) => {
     })
 }
 
+//missed
+let missedWords = (req, res) => {
+    db.query(showAllFromTable("missed_words_table"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching missed words")
+            return res.status(500).json({status: "🔴 Error while fetching missed words"})
+        }
+        console.log(`🟢 Missed words fetching was successful`)
+        return res.status(200).json(
+            {
+                missed_words: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+//post missed words function
+let postMissedWords = (req, res) => {
+    console.log(req.body)
+
+    db.query(handleMissedWordsEntryQuery(req.body.word),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Word insertion was successful`)
+        return res.status(200).json(
+            {
+                word: req.body.word,
+                status: "🟢 Word insertion was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//users
+let getAllUsers = (req, res) => {
+    db.query(showAllFromTable("new_user"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching all users")
+            return res.status(500).json({status: "🔴 Error while fetching all users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                missed_words: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+let incrementUserCount = (req, res) => {
+    db.query(handleUserIncrementQuery(),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while incrementing user count")
+            return res.status(500).json({status: "🔴 Error while incrementing user count"})
+        }
+        console.log(`🟢 Incrementing user count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Incrementing user count was successful", 
+            }
+        ); //this will return a json array
+    })
+}
+
 
 
 //404 Route
@@ -1042,6 +1124,12 @@ module.exports = {
     notesSss2: notesSss2,
     notesWpp: notesWpp,
     notesEcono: notesEcono,
+
+    missedWords: missedWords,
+    postMissedWords: postMissedWords,
+
+    getAllUsers: getAllUsers,
+    incrementUserCount: incrementUserCount,
 
 
 
