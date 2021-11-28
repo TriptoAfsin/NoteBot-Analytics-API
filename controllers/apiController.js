@@ -95,6 +95,7 @@ let notesMath2 = (req, res) => {
     if(!req.query.adminKey){
         return res.status(401).json(
             {
+                "query": req.query,
                 "Error": "🔴 Unauthorized Access !"
             }
         ) 
