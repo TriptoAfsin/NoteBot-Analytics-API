@@ -5,12 +5,17 @@ const fs = require('fs')
 //sql queries
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
-    updateSubCount: ""
+    updateSubCount: "",
+    createTable: "CREATE TABLE products(id int AUTO_INCREMENT, prod_name VARCHAR(255), selling_price float(24), description VARCHAR(65535),PRIMARY KEY (id))"
 }
 
 //query generators
 let handleCountIncrementQuery = (subName) => {
     return `UPDATE subnamedb SET count = count + 1 WHERE sub_name = "${subName}"`
+}
+
+let handleCountIncrementQueryLabs = (subName) => {
+    return `UPDATE labsdb SET count = count + 1 WHERE lab_name = "${subName}"`
 }
 
 let handleMissedWordsEntryQuery = (word) => {
@@ -29,6 +34,9 @@ let handleUserIncrementQuery = () => {
 let apiStatus = {
     endPoints: [
         "/",
+        "/users",
+        "/missed",
+        "/notes"
       ],
     DB_Connection_Status: false
 }
@@ -64,9 +72,28 @@ let noteSubjects = (req, res) => {
     db.query(SQL.getSubjects,(err, result)=> {
         if(err){
             console.log(err)
-            console.error("🔴 Error while retrieving products")
+            console.error("🔴 Error while retrieving note subjects")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
         }
         console.log(`🟢 Subject Data fetching was successful`)
+        return res.status(200).json(
+            {
+                NoteSubjects: result, //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//all - lab
+let labSubjects = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    db.query(showAllFromTable("labsdb"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while retrieving products")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Labs Data fetching was successful`)
         return res.status(200).json(
             {
                 NoteSubjects: result, //returns all from subnamedb
@@ -1070,6 +1097,607 @@ let incrementUserCount = (req, res) => {
 }
 
 
+//labs
+//phy1
+let labsPhy1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("phy1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//phy2
+let labsPhy2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("phy2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//chem1
+let labsChem1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("chem1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//chem2
+let labsChem2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("chem2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//cp
+let labsCP = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("cpLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//msp
+let labsMsp = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("mspLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//am1
+let labsAm1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("am1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//am2
+let labsAm2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("am2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//ym1
+let labsYm1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("ym1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//ym2
+let labsYm2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("ym2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+
+//wp1
+let labsWp1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("wp1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//wp2
+let labsWp2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("wp2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//fm1
+let labsFm1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("fm1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//fm2
+let labsFm2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("fm2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//feee
+let labsFeee = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("feeeLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//fme
+let labsFme = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("fmeLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//ttqc
+let labsTtqc = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("ttqcLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//ap1
+let labsAp1 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("ap1Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//ap2
+let labsAp2 = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("ap2Lab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//mp
+let labsMp = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("mpLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//bce
+let labsBce = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("bceLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//fsd
+let labsFsd = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("fsdLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+//lss
+let labsLss = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    db.query(handleCountIncrementQueryLabs("lssLab"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while updating count")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Incrementing count was successful`)
+        return res.status(200).json(
+            {
+                status: "🟢 Operation was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
+
 
 //404 Route
 let notFound = (req, res) => {
@@ -1130,6 +1758,33 @@ module.exports = {
 
     getAllUsers: getAllUsers,
     incrementUserCount: incrementUserCount,
+
+    //labs
+    labSubjects: labSubjects,
+    labsPhy1: labsPhy1,
+    labsPhy2: labsPhy2,
+    labsChem1: labsChem1,
+    labsChem2: labsChem2,
+    labsCP: labsCP,
+    labsMsp: labsMsp,
+    labsBce: labsBce,
+    
+    labsAm1: labsAm1,
+    labsAm2: labsAm2,
+    labsYm1: labsYm1,
+    labsYm2: labsYm2,
+    labsWp1: labsWp1,
+    labsWp2: labsWp2,
+    labsFm1: labsFm1,
+    labsFm2: labsFm2,
+    labsFeee: labsFeee,
+    labsFme: labsFme,
+    labsTtqc: labsTtqc,
+    labsAp1: labsAp1,
+    labsAp2: labsAp2,
+    labsMp: labsMp,
+    labsFsd: labsFsd,
+    labsLss: labsLss,
 
 
 

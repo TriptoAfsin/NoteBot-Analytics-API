@@ -93,6 +93,56 @@ let initWebRoutes = (app) => {
     router.get("/notes/wpp", apiController.notesWpp);
     //econo
     router.get("/notes/econo", apiController.notesEcono);
+
+
+    //labs
+    router.get("/labs", apiController.labSubjects);
+    //labs - phy1
+    router.get("/labs/phy1", apiController.labsPhy1);
+    //labs - phy2
+    router.get("/labs/phy2", apiController.labsPhy2);
+    //labs - chem1
+    router.get("/labs/chem1", apiController.labsChem1);
+    //labs - chem2
+    router.get("/labs/chem2", apiController.labsChem2);
+    //labs - cp
+    router.get("/labs/cp", apiController.labsCP);
+    //labs - bce
+    router.get("/labs/bce", apiController.labsBce);
+    //labs - msp
+    router.get("/labs/msp", apiController.labsMsp);
+    //labs - am1
+    router.get("/labs/am1", apiController.labsAm1);
+    //labs - am2
+    router.get("/labs/am2", apiController.labsAm2);
+    //labs - ym1
+    router.get("/labs/ym1", apiController.labsYm1);
+    //labs - ym2
+    router.get("/labs/ym2", apiController.labsYm2);
+    //labs - wp1
+    router.get("/labs/wp1", apiController.labsWp1);
+    //labs - wp2
+    router.get("/labs/wp2", apiController.labsWp2);
+    //labs - fm1
+    router.get("/labs/fm1", apiController.labsFm1);
+    //labs - fm2
+    router.get("/labs/fm2", apiController.labsFm2);
+    //labs - labsFeee
+    router.get("/labs/feee", apiController.labsFeee);
+    //labs - fme
+    router.get("/labs/fme", apiController.labsFme);
+    //labs - ttqc
+    router.get("/labs/ttqc", apiController.labsTtqc);
+    //labs - ap1
+    router.get("/labs/ap1", apiController.labsAp1);
+    //labs - ap2
+    router.get("/labs/ap2", apiController.labsAp2);
+    //labs - mp
+    router.get("/labs/mp", apiController.labsMp);
+    //labs - fsd
+    router.get("/labs/fsd", apiController.labsFsd);
+    //labs - lss
+    router.get("/labs/lss", apiController.labsLss);
     
 
     //missed_words
