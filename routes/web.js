@@ -149,6 +149,9 @@ let initWebRoutes = (app) => {
     router.get("/missed", apiController.missedWords);
     router.post("/missed",jsonParser,apiController.postMissedWords);
 
+    //new user info
+    router.post("/user/new",jsonParser,apiController.postNewAppUsersInfo);
+
 
     //users
     router.get("/users", apiController.getAllUsers);

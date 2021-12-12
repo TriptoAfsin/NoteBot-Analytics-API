@@ -6,7 +6,7 @@ const fs = require('fs')
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
-    createTable: "CREATE TABLE products(id int AUTO_INCREMENT, prod_name VARCHAR(255), selling_price float(24), description VARCHAR(65535),PRIMARY KEY (id))"
+    createTable: "CREATE TABLE app_users(id int AUTO_INCREMENT, email VARCHAR(255), uni_id VARCHAR(30),batch INT(10),dept VARCHAR(30),PRIMARY KEY (id))"
 }
 
 //query generators
@@ -20,6 +20,10 @@ let handleCountIncrementQueryLabs = (subName) => {
 
 let handleMissedWordsEntryQuery = (word) => {
     return `INSERT INTO missed_words_table VALUES(DEFAULT, '${word}')`
+}
+
+let handleNewUserInfoQuery = (email, uni_id, batch, dept) => {
+    return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}')`
 }
 
 let showAllFromTable = (tableName) => {
@@ -1063,6 +1067,46 @@ let postMissedWords = (req, res) => {
     })
 }
 
+//post missed words function
+let postNewAppUsersInfo = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email || !req.body.uni_id || !req.body.batch || !req.body.dept){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {email, uni_id, batch, dept} = req?.body
+
+    db.query(handleNewUserInfoQuery(email, uni_id, batch, dept),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while inserting new user info")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(req.body)
+        console.log(`🟢 New user info insertion was successful`)
+        return res.status(200).json(
+            {
+                user: {
+                    email: email,
+                    uni_id: uni_id,
+                    batch: batch,
+                    dept: dept
+                },
+                status: "🟢 New user info insertion was successful", //returns all from subnamedb
+            }
+        ); //this will return a json array
+    })
+}
+
 //users
 let getAllUsers = (req, res) => {
     db.query(showAllFromTable("new_user"),(err, result)=> {
@@ -1785,6 +1829,9 @@ module.exports = {
     labsMp: labsMp,
     labsFsd: labsFsd,
     labsLss: labsLss,
+
+    //new user info
+    postNewAppUsersInfo: postNewAppUsersInfo,
 
 
 
