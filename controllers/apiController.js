@@ -1083,7 +1083,7 @@ let postNewAppUsersInfo = (req, res) => {
         return res.status(400).json({status: "🔴 Bad Request"})
     }
 
-    let {email, uni_id, batch, dept} = req?.body
+    let {email, uni_id, batch, dept} = req.body
 
     db.query(handleNewUserInfoQuery(email, uni_id, batch, dept),(err, result)=> {
         if(err){
