@@ -1,6 +1,7 @@
 require("dotenv").config();
 const mySql = require('mysql')
 const fs = require('fs')
+let validate = require('is-it-dash')
 
 //sql queries
 let SQL = {
@@ -1081,6 +1082,10 @@ let postNewAppUsersInfo = (req, res) => {
     if(!req.body || !req.body.email || !req.body.uni_id || !req.body.batch || !req.body.dept){
         console.log(req.body)
         return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    if(!validate.isEmail(req.body.email)){
+        return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
     }
 
     let {email, uni_id, batch, dept} = req.body
