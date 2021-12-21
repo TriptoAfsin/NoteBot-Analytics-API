@@ -7,7 +7,7 @@ let validate = require('is-it-dash')
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
-    createTable: "CREATE TABLE app_users(id int AUTO_INCREMENT, email VARCHAR(255), uni_id VARCHAR(30),batch INT(10),dept VARCHAR(30),PRIMARY KEY (id))"
+    createTable: "CREATE TABLE app_err_logs(id int AUTO_INCREMENT, date VARCHAR(255), log VARCHAR(60000),os VARCHAR(255),email VARCHAR(30),PRIMARY KEY (id))"
 }
 
 //query generators
@@ -25,6 +25,10 @@ let handleMissedWordsEntryQuery = (word) => {
 
 let handleNewUserInfoQuery = (email, uni_id, batch, dept) => {
     return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}')`
+}
+
+let handleErrorQuery = (date, log, os, email) => {
+    return `INSERT INTO app_err_logs VALUES(DEFAULT, '${date}', '${log}', '${os}', '${email}')`
 }
 
 let showAllFromTable = (tableName) => {
@@ -1068,7 +1072,7 @@ let postMissedWords = (req, res) => {
     })
 }
 
-//post missed words function
+//new user info insertion
 let postNewAppUsersInfo = (req, res) => {
 
     if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
@@ -1144,6 +1148,53 @@ let incrementUserCount = (req, res) => {
         ); //this will return a json array
     })
 }
+
+
+//err logging
+let postNewErrors = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email || !req.body.log || !req.body.os){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    if(!validate.isEmail(req.body.email)){
+        return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
+    }
+
+    let {date, log, os, email} = req.body
+
+    db.query(handleErrorQuery(date, log, os, email),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while posting error")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(req.body)
+        console.log(`🟢 New err log insertion was successful`)
+        return res.status(200).json(
+            {
+                errorInfo: {
+                    date: date,
+                    email: email,
+                    os: os,
+                    log: log
+                },
+                status: "🟢 New Error log insertion was successful", 
+            }
+        ); //this will return a json array
+    })
+}
+
+
 
 
 //labs
@@ -1837,6 +1888,10 @@ module.exports = {
 
     //new user info
     postNewAppUsersInfo: postNewAppUsersInfo,
+
+
+    //err logging
+    postNewErrors: postNewErrors,
 
 
 
