@@ -7,7 +7,7 @@ let validate = require('is-it-dash')
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
-    createTable: "CREATE TABLE app_err_logs(id int AUTO_INCREMENT, date VARCHAR(255), log VARCHAR(60000),os VARCHAR(255),email VARCHAR(30),PRIMARY KEY (id))"
+    createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))"
 }
 
 //query generators
@@ -29,6 +29,10 @@ let handleNewUserInfoQuery = (email, uni_id, batch, dept) => {
 
 let handleErrorQuery = (date, log, os, email) => {
     return `INSERT INTO app_err_logs VALUES(DEFAULT, '${date}', '${log}', '${os}', '${email}')`
+}
+
+let handleGameScore = (date, score, email) => {
+    return `INSERT INTO game_hof VALUES(DEFAULT, '${date}', '${score}', '${email}')`
 }
 
 let showAllFromTable = (tableName) => {
@@ -1194,6 +1198,49 @@ let postNewErrors = (req, res) => {
     })
 }
 
+//game data posting 
+let postNoteBirdScore = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email || !req.body.score || !req.body.date){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    if(!validate.isEmail(req.body.email)){
+        return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
+    }
+
+    let {date, score, email} = req.body
+
+    db.query(handleGameScore(date, score, email),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while posting game score")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(req.body)
+        console.log(`🟢 Game score insertion was successful`)
+        return res.status(200).json(
+            {
+                gameScoreInfo: {
+                    date: date,
+                    email: email,
+                    score: score,
+                },
+                status: "🟢 Game score insertion insertion was successful", 
+            }
+        ); //this will return a json array
+    })
+}
+
 
 
 
@@ -1888,6 +1935,9 @@ module.exports = {
 
     //new user info
     postNewAppUsersInfo: postNewAppUsersInfo,
+
+    //game score posting
+    postNoteBirdScore: postNoteBirdScore,
 
 
     //err logging
