@@ -35,6 +35,11 @@ let handleGameScore = (date, score, email) => {
     return `INSERT INTO game_hof VALUES(DEFAULT, '${date}', '${score}', '${email}')`
 }
 
+
+let getTopNoteBirdScore = (limit) => {
+    return `SELECT * FROM game_hof ORDER BY score DESC limit ${limit}`
+}
+
 let showAllFromTable = (tableName) => {
     return `SELECT * FROM ${tableName}`
 }
@@ -1131,7 +1136,7 @@ let getAllUsers = (req, res) => {
         console.log(`🟢 All users fetching was successful`)
         return res.status(200).json(
             {
-                missed_words: result, 
+                users: result, 
             }
         ); //this will return a json array
     })
@@ -1236,6 +1241,23 @@ let postNoteBirdScore = (req, res) => {
                     score: score,
                 },
                 status: "🟢 Game score insertion insertion was successful", 
+            }
+        ); //this will return a json array
+    })
+}
+
+//game data getting
+let getNoteBirdHof = (req, res) => {
+    db.query(getTopNoteBirdScore(10),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching hof")
+            return res.status(500).json({status: "🔴 Error while fetching hof"})
+        }
+        console.log(`🟢 HoF fetching was successful`)
+        return res.status(200).json(
+            {
+                hof: result, 
             }
         ); //this will return a json array
     })
@@ -1938,6 +1960,7 @@ module.exports = {
 
     //game score posting
     postNoteBirdScore: postNoteBirdScore,
+    getNoteBirdHof: getNoteBirdHof,
 
 
     //err logging

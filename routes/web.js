@@ -157,6 +157,8 @@ let initWebRoutes = (app) => {
 
     //game score posting
     router.post("/games/notebird",jsonParser,apiController.postNoteBirdScore);
+    //game hof getting
+    router.get("/games/notebird",apiController.getNoteBirdHof);
 
 
     //users
