@@ -31,8 +31,8 @@ let handleErrorQuery = (date, log, os, email) => {
     return `INSERT INTO app_err_logs VALUES(DEFAULT, '${date}', '${log}', '${os}', '${email}')`
 }
 
-let handleGameScore = (date, score, email) => {
-    return `INSERT INTO game_hof VALUES(DEFAULT, '${date}', '${score}', '${email}')`
+let handleGameScore = (date, score, email, user_name) => {
+    return `INSERT INTO game_hof VALUES(DEFAULT, '${date}', '${score}', '${email}', '${user_name}')`
 }
 
 
@@ -1223,9 +1223,9 @@ let postNoteBirdScore = (req, res) => {
         return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
     }
 
-    let {date, score, email} = req.body
+    let {date, score, email, user_name} = req.body
 
-    db.query(handleGameScore(date, score, email),(err, result)=> {
+    db.query(handleGameScore(date, score, email, user_name),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while posting game score")
@@ -1238,6 +1238,7 @@ let postNoteBirdScore = (req, res) => {
                 gameScoreInfo: {
                     date: date,
                     email: email,
+                    user_name: user_name,
                     score: score,
                 },
                 status: "🟢 Game score insertion insertion was successful", 
