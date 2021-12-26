@@ -7,7 +7,8 @@ let validate = require('is-it-dash')
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
-    createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))"
+    createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))",
+    alterTable: "ALTER TABLE app_users ADD role varchar(255)"
 }
 
 //query generators
@@ -23,8 +24,8 @@ let handleMissedWordsEntryQuery = (word) => {
     return `INSERT INTO missed_words_table VALUES(DEFAULT, '${word}')`
 }
 
-let handleNewUserInfoQuery = (email, uni_id, batch, dept) => {
-    return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}')`
+let handleNewUserInfoQuery = (email, uni_id, batch, dept, role) => {
+    return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}', '${role}')`
 }
 
 let handleErrorQuery = (date, log, os, email) => {
@@ -54,7 +55,8 @@ let apiStatus = {
         "/",
         "/users",
         "/missed",
-        "/notes"
+        "/notes",
+        "/games/notebird"
       ],
     DB_Connection_Status: false
 }
@@ -1092,7 +1094,7 @@ let postNewAppUsersInfo = (req, res) => {
         ) 
     }
 
-    if(!req.body || !req.body.email || !req.body.uni_id || !req.body.batch || !req.body.dept){
+    if(!req.body || !req.body.email || !req.body.uni_id || !req.body.batch || !req.body.dept || !req.body.role){
         console.log(req.body)
         return res.status(400).json({status: "🔴 Bad Request"})
     }
@@ -1101,9 +1103,9 @@ let postNewAppUsersInfo = (req, res) => {
         return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
     }
 
-    let {email, uni_id, batch, dept} = req.body
+    let {email, uni_id, batch, dept, role} = req.body
 
-    db.query(handleNewUserInfoQuery(email, uni_id, batch, dept),(err, result)=> {
+    db.query(handleNewUserInfoQuery(email, uni_id, batch, dept, role),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while inserting new user info")
@@ -1117,7 +1119,8 @@ let postNewAppUsersInfo = (req, res) => {
                     email: email,
                     uni_id: uni_id,
                     batch: batch,
-                    dept: dept
+                    dept: dept,
+                    role: role
                 },
                 status: "🟢 New user info insertion was successful", //returns all from subnamedb
             }
