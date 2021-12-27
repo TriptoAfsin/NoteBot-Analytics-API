@@ -159,6 +159,10 @@ let initWebRoutes = (app) => {
 
     //err posting
     router.post("/logs/err",jsonParser,apiController.postNewErrors);
+    //err log getting
+    router.post("/logs/err",jsonParser,apiController.postNewErrors);
+    //err log getting
+    router.get("/logs/err",apiController.getErrorLogs);
 
     //game score posting
     router.post("/games/notebird",jsonParser,apiController.postNoteBirdScore);

@@ -1264,6 +1264,31 @@ let postNewErrors = (req, res) => {
     })
 }
 
+//show error logs
+let getErrorLogs = (req, res) => {
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+    db.query(showAllFromTable("app_err_logs"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while retrieving logs")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Logs Data fetching was successful`)
+        return res.status(200).json(
+            {
+                errorLogs: result
+            }
+        ); //this will return a json array
+    })
+}
+
+
 //game data posting 
 let postNoteBirdScore = (req, res) => {
 
@@ -2031,6 +2056,7 @@ module.exports = {
 
     //err logging
     postNewErrors: postNewErrors,
+    getErrorLogs: getErrorLogs,
 
     //app user count
     getAppUserCount: getAppUserCount,
