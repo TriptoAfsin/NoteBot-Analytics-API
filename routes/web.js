@@ -164,6 +164,8 @@ let initWebRoutes = (app) => {
     //users
     router.get("/users", apiController.getAllUsers);
     //users
+    router.get("/users/app", apiController.getAppUserCount);
+    //users
     router.post("/users", apiController.incrementUserCount);
 
     //404 route

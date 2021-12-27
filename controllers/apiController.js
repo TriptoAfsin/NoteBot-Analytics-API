@@ -8,7 +8,8 @@ let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
     createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))",
-    alterTable: "ALTER TABLE app_users ADD role varchar(255)"
+    alterTable: "ALTER TABLE app_users ADD role varchar(255)",
+    countAppUsers: "SELECT COUNT(*) FROM app_users;"
 }
 
 //query generators
@@ -1145,6 +1146,23 @@ let getAllUsers = (req, res) => {
     })
 }
 
+//users
+let getAppUserCount = (req, res) => {
+    db.query(SQL.countAppUsers,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app user count")
+            return res.status(500).json({status: "🔴 Error while fetching app user count"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                app_users_count: result[0], 
+            }
+        ); //this will return a json array
+    })
+}
+
 let incrementUserCount = (req, res) => {
     db.query(handleUserIncrementQuery(),(err, result)=> {
         if(err){
@@ -1969,6 +1987,9 @@ module.exports = {
 
     //err logging
     postNewErrors: postNewErrors,
+
+    //app user count
+    getAppUserCount: getAppUserCount,
 
 
 
