@@ -1204,6 +1204,13 @@ let getAppUserCount = (req, res) => {
 }
 
 let getAppUsersInfo = (req, res) => {
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
     db.query(showAllFromTable("app_users"),(err, result)=> {
         if(err){
             console.log(err)
