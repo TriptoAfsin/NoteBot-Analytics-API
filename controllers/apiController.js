@@ -1226,6 +1226,147 @@ let getAppUsersInfo = (req, res) => {
     })
 }
 
+//user filtering - email
+let getAppUsersByEmail = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {email} = req.body
+
+    let searchSQL = `SELECT * FROM app_users WHERE email LIKE '${email}'`
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+
+//user filtering - id
+let getAppUsersById = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.id){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {id} = req.body
+
+    let searchSQL = `SELECT * FROM app_users WHERE uni_id LIKE '${id}'`
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+//user filtering - dept
+let getAppUsersByDept = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.dept){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {dept} = req.body
+
+    let searchSQL = `SELECT * FROM app_users WHERE dept LIKE '${dept}'`
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+//user filtering - batch
+let getAppUsersByBatch = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.batch){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {batch} = req.body
+
+    let searchSQL = `SELECT * FROM app_users WHERE batch LIKE '${batch}'`
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
 
 let incrementUserCount = (req, res) => {
     db.query(handleUserIncrementQuery(),(err, result)=> {
@@ -2074,6 +2215,11 @@ module.exports = {
     postNewAppUsersInfo: postNewAppUsersInfo,
     //get all app users info
     getAppUsersInfo: getAppUsersInfo,
+    //user filtering
+    getAppUsersByEmail: getAppUsersByEmail,
+    getAppUsersById: getAppUsersById,
+    getAppUsersByDept: getAppUsersByDept,
+    getAppUsersByBatch: getAppUsersByBatch,
 
     //game score posting
     postNoteBirdScore: postNoteBirdScore,

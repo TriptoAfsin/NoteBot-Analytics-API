@@ -158,6 +158,11 @@ let initWebRoutes = (app) => {
     router.post("/user/new",jsonParser,apiController.postNewAppUsersInfo);
     //get all app users
     router.get("/users/app",apiController.getAppUsersInfo);
+    //user filtering
+    router.post("/users/app/email",jsonParser,apiController.getAppUsersByEmail);
+    router.post("/users/app/id",jsonParser,apiController.getAppUsersById);
+    router.post("/users/app/dept",jsonParser,apiController.getAppUsersByDept);
+    router.post("/users/app/batch",jsonParser,apiController.getAppUsersByBatch);
 
     //err posting
     router.post("/logs/err",jsonParser,apiController.postNewErrors);
