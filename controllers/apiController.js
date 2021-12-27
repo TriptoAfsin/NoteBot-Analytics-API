@@ -1203,6 +1203,23 @@ let getAppUserCount = (req, res) => {
     })
 }
 
+let getAppUsersInfo = (req, res) => {
+    db.query(showAllFromTable("app_users"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢 All users fetching was successful`)
+        return res.status(200).json(
+            {
+                app_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+
 let incrementUserCount = (req, res) => {
     db.query(handleUserIncrementQuery(),(err, result)=> {
         if(err){
@@ -2048,6 +2065,8 @@ module.exports = {
 
     //new user info
     postNewAppUsersInfo: postNewAppUsersInfo,
+    //get all app users info
+    getAppUsersInfo: getAppUsersInfo,
 
     //game score posting
     postNoteBirdScore: postNoteBirdScore,

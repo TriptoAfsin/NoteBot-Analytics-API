@@ -156,6 +156,8 @@ let initWebRoutes = (app) => {
 
     //new user info
     router.post("/user/new",jsonParser,apiController.postNewAppUsersInfo);
+    //get all app users
+    router.get("/users/app",apiController.getAppUsersInfo);
 
     //err posting
     router.post("/logs/err",jsonParser,apiController.postNewErrors);
