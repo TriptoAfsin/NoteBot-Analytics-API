@@ -1453,6 +1453,41 @@ let getErrorLogs = (req, res) => {
     })
 }
 
+//errors by email
+let getErrorsByEmail = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {email} = req.body
+
+    let searchSQL = `SELECT * FROM app_err_logs WHERE email LIKE '${email}'`
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching logs by email")
+            return res.status(500).json({status: "🔴 Error while fetching logs by email"})
+        }
+        console.log(`🟢 Logs fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_logs: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
 
 //game data posting 
 let postNoteBirdScore = (req, res) => {
@@ -2229,6 +2264,7 @@ module.exports = {
     //err logging
     postNewErrors: postNewErrors,
     getErrorLogs: getErrorLogs,
+    getErrorsByEmail: getErrorsByEmail,
 
     //app user count
     getAppUserCount: getAppUserCount,

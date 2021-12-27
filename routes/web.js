@@ -167,7 +167,7 @@ let initWebRoutes = (app) => {
     //err posting
     router.post("/logs/err",jsonParser,apiController.postNewErrors);
     //err log getting
-    router.post("/logs/err",jsonParser,apiController.postNewErrors);
+    router.post("/logs/err/email",jsonParser,apiController.getErrorsByEmail);
     //err log getting
     router.get("/logs/err",apiController.getErrorLogs);
 
