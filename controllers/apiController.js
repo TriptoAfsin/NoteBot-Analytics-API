@@ -42,6 +42,10 @@ let getTopNoteBirdScore = (limit) => {
     return `SELECT * FROM game_hof ORDER BY score DESC limit ${limit}`
 }
 
+let getTopDataFromTable = (table,field,limit) => {
+    return `SELECT * FROM ${table} ORDER BY ${field} DESC limit ${limit}`
+}
+
 let showAllFromTable = (tableName) => {
     return `SELECT * FROM ${tableName}`
 }
@@ -105,6 +109,24 @@ let noteSubjects = (req, res) => {
     })
 }
 
+//notes top 5
+let topNoteSubjects = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    db.query(getTopDataFromTable("subnamedb", "count", "5"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while retrieving top note subjects")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Top Note Subject Data fetching was successful`)
+        return res.status(200).json(
+            {
+                topNoteSubjects: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
 //all - lab
 let labSubjects = (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -117,7 +139,25 @@ let labSubjects = (req, res) => {
         console.log(`🟢 Labs Data fetching was successful`)
         return res.status(200).json(
             {
-                NoteSubjects: result, //returns all from subnamedb
+                LabSubjects: result, //returns all from labsdb
+            }
+        ); //this will return a json array
+    })
+}
+
+//labs top 5
+let topLabSubjects = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    db.query(getTopDataFromTable("labsdb", "count", "5"),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while retrieving top lab subjects")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(`🟢 Top Lab Subject Data fetching was successful`)
+        return res.status(200).json(
+            {
+                topLabSubjects: result, 
             }
         ); //this will return a json array
     })
@@ -1906,6 +1946,8 @@ module.exports = {
     apiIntro: apiIntro,
 
     noteSubjects: noteSubjects,
+    topNoteSubjects :topNoteSubjects,
+
     notesMath1: notesMath1,
     notesMath2: notesMath2,
     notesPhy1: notesPhy1,
@@ -1952,6 +1994,8 @@ module.exports = {
 
     //labs
     labSubjects: labSubjects,
+    //top labs
+    topLabSubjects: topLabSubjects,
     labsPhy1: labsPhy1,
     labsPhy2: labsPhy2,
     labsChem1: labsChem1,

@@ -22,6 +22,9 @@ let initWebRoutes = (app) => {
 
     //all notes
     router.get("/notes", apiController.noteSubjects);
+    //top notes
+    router.get("/notes/top", apiController.topNoteSubjects);
+
     //math1
     router.get("/notes/math1", apiController.notesMath1);
     //math2
@@ -97,6 +100,8 @@ let initWebRoutes = (app) => {
 
     //labs
     router.get("/labs", apiController.labSubjects);
+    //top labs
+    router.get("/labs/top", apiController.topLabSubjects);
     //labs - phy1
     router.get("/labs/phy1", apiController.labsPhy1);
     //labs - phy2
