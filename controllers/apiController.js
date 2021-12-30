@@ -8,7 +8,7 @@ let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
     createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))",
-    alterTable: "ALTER TABLE app_users ADD role varchar(255)",
+    alterTable: "ALTER TABLE app_users ADD imgUrl varchar(1000)",
     countAppUsers: "SELECT COUNT(*) FROM app_users;"
 }
 
@@ -25,8 +25,8 @@ let handleMissedWordsEntryQuery = (word) => {
     return `INSERT INTO missed_words_table VALUES(DEFAULT, '${word}')`
 }
 
-let handleNewUserInfoQuery = (email, uni_id, batch, dept, role) => {
-    return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}', '${role}')`
+let handleNewUserInfoQuery = (email, uni_id, batch, dept, role, imgUrl="false") => {
+    return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}', '${role}', '${imgUrl}')`
 }
 
 let handleErrorQuery = (date, log, os, email) => {
@@ -1127,6 +1127,8 @@ let postMissedWords = (req, res) => {
 //new user info insertion
 let postNewAppUsersInfo = (req, res) => {
 
+    let imgUrl
+
     if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
         return res.status(401).json(
             {
@@ -1140,13 +1142,22 @@ let postNewAppUsersInfo = (req, res) => {
         return res.status(400).json({status: "🔴 Bad Request"})
     }
 
+    if(!req.body.imgUrl){
+        imgUrl = "not given"
+    }
+    else{
+        imgUrl = req.body.imgUrl
+    }
+
+
+
     if(!validate.isEmail(req.body.email)){
         return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
     }
 
     let {email, uni_id, batch, dept, role} = req.body
 
-    db.query(handleNewUserInfoQuery(email, uni_id, batch, dept, role),(err, result)=> {
+    db.query(handleNewUserInfoQuery(email, uni_id, batch, dept, role, imgUrl),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while inserting new user info")
