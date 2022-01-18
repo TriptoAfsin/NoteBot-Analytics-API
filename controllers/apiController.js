@@ -7,7 +7,7 @@ let validate = require('is-it-dash')
 let SQL = {
     getSubjects: "SELECT * FROM subnamedb",
     updateSubCount: "",
-    createTable: "CREATE TABLE game_hof(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(30),PRIMARY KEY (id))",
+    createTable: "CREATE TABLE game_hof_noteDino(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(50), user_name VARCHAR(100),PRIMARY KEY (id))",
     alterTable: "ALTER TABLE app_users ADD imgUrl varchar(1000)",
     countAppUsers: "SELECT COUNT(*) FROM app_users;"
 }
@@ -33,13 +33,13 @@ let handleErrorQuery = (date, log, os, email) => {
     return `INSERT INTO app_err_logs VALUES(DEFAULT, '${date}', '${log}', '${os}', '${email}')`
 }
 
-let handleGameScore = (date, score, email, user_name) => {
-    return `INSERT INTO game_hof VALUES(DEFAULT, '${date}', '${score}', '${email}', '${user_name}')`
+let handleGameScore = (db_name, date, score, email, user_name) => {
+    return `INSERT INTO ${db_name} VALUES(DEFAULT, '${date}', '${score}', '${email}', '${user_name}')`
 }
 
 
-let getTopNoteBirdScore = (limit) => {
-    return `SELECT * FROM game_hof ORDER BY score DESC limit ${limit}`
+let getTopScoreFromTable = (db_name ,limit) => {
+    return `SELECT * FROM ${db_name} ORDER BY score DESC limit ${limit}`
 }
 
 let getTopDataFromTable = (table,field,limit) => {
@@ -1500,7 +1500,7 @@ let getErrorsByEmail = (req, res) => {
 }
 
 
-//game data posting 
+//game data posting (notebird)
 let postNoteBirdScore = (req, res) => {
 
     if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
@@ -1522,7 +1522,7 @@ let postNoteBirdScore = (req, res) => {
 
     let {date, score, email, user_name} = req.body
 
-    db.query(handleGameScore(date, score, email, user_name),(err, result)=> {
+    db.query(handleGameScore("game_hof", date, score, email, user_name),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while posting game score")
@@ -1544,9 +1544,71 @@ let postNoteBirdScore = (req, res) => {
     })
 }
 
-//game data getting
+//game data getting(notebird)
 let getNoteBirdHof = (req, res) => {
-    db.query(getTopNoteBirdScore(10),(err, result)=> {
+    db.query(getTopScoreFromTable("game_hof",10),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching hof")
+            return res.status(500).json({status: "🔴 Error while fetching hof"})
+        }
+        console.log(`🟢 HoF fetching was successful`)
+        return res.status(200).json(
+            {
+                hof: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+
+//game data posting (notedino)
+let postNoteDinoScores = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.email || !req.body.score || !req.body.date){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    if(!validate.isEmail(req.body.email)){
+        return res.status(400).json({status: "🔴 Bad Request, Invalid Email"})
+    }
+
+    let {date, score, email, user_name} = req.body
+
+    db.query(handleGameScore("game_hof_notedino", date, score, email, user_name),(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while posting game score")
+            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+        }
+        console.log(req.body)
+        console.log(`🟢 Game score insertion was successful`)
+        return res.status(200).json(
+            {
+                gameScoreInfo: {
+                    date: date,
+                    email: email,
+                    user_name: user_name,
+                    score: score,
+                },
+                status: "🟢 Game score insertion insertion was successful", 
+            }
+        ); //this will return a json array
+    })
+}
+
+//game data getting(notedino)
+let getNoteDinoHof = (req, res) => {
+    db.query(getTopScoreFromTable("game_hof_notedino",10),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while fetching hof")
@@ -2270,6 +2332,10 @@ module.exports = {
     //game score posting
     postNoteBirdScore: postNoteBirdScore,
     getNoteBirdHof: getNoteBirdHof,
+
+    postNoteDinoScores: postNoteDinoScores,
+    getNoteDinoHof: getNoteDinoHof,
+
 
 
     //err logging

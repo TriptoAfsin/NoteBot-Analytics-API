@@ -171,10 +171,15 @@ let initWebRoutes = (app) => {
     //err log getting
     router.get("/logs/err",apiController.getErrorLogs);
 
-    //game score posting
+    //game score posting(notebird)
     router.post("/games/notebird",jsonParser,apiController.postNoteBirdScore);
-    //game hof getting
+    //game hof getting(notebird)
     router.get("/games/notebird",apiController.getNoteBirdHof);
+
+    //game score posting(notedino)
+    router.post("/games/notedino",jsonParser,apiController.postNoteDinoScores);
+    //game hof getting(notedino)
+    router.get("/games/notedino",apiController.getNoteDinoHof);
 
 
     //users
