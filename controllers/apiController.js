@@ -9,7 +9,8 @@ let SQL = {
     updateSubCount: "",
     createTable: "CREATE TABLE game_hof_noteDino(id int AUTO_INCREMENT, date VARCHAR(255), score BIGINT,email VARCHAR(50), user_name VARCHAR(100),PRIMARY KEY (id))",
     alterTable: "ALTER TABLE app_users ADD imgUrl varchar(1000)",
-    countAppUsers: "SELECT COUNT(*) FROM app_users;"
+    countAppUsers: "SELECT COUNT(*) FROM app_users;",
+    getUsersByBatchAndDept: "SELECT * FROM `app_users` WHERE `batch` = 44 AND `dept` LIKE 'IPE' ORDER BY `batch` DESC"
 }
 
 //query generators
@@ -1379,6 +1380,42 @@ let getAppUsersByBatch = (req, res) => {
 }
 
 
+//user filtering - batch & dept
+let getAppUsersByDeptAndBatch = (req, res) => {
+
+    if(!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY){
+        return res.status(401).json(
+            {
+                "Error": "🔴 Unauthorized Access !"
+            }
+        ) 
+    }
+
+    if(!req.body || !req.body.dept || !req.body.batch){
+        console.log(req.body)
+        return res.status(400).json({status: "🔴 Bad Request"})
+    }
+
+    let {batch, dept} = req.body
+
+    let searchSQL = `SELECT * FROM app_users WHERE batch = ${batch} AND dept LIKE '${dept}' ORDER BY batch DESC `
+
+    db.query(searchSQL,(err, result)=> {
+        if(err){
+            console.log(err)
+            console.error("🔴 Error while fetching app users")
+            return res.status(500).json({status: "🔴 Error while fetching app users"})
+        }
+        console.log(`🟢Filtered users fetching was successful`)
+        return res.status(200).json(
+            {
+                searched_users: result, 
+            }
+        ); //this will return a json array
+    })
+}
+
+
 let incrementUserCount = (req, res) => {
     db.query(handleUserIncrementQuery(),(err, result)=> {
         if(err){
@@ -1589,8 +1626,7 @@ let postNoteDinoScores = (req, res) => {
             console.log(err)
             console.error("🔴 Error while posting game score")
             return res.status(500).json({
-                status: "🔴 Operation was unsuccessful!",
-                err: err
+                status: "🔴 Operation was unsuccessful!"
             })
         }
         console.log(req.body)
@@ -2331,6 +2367,7 @@ module.exports = {
     getAppUsersById: getAppUsersById,
     getAppUsersByDept: getAppUsersByDept,
     getAppUsersByBatch: getAppUsersByBatch,
+    getAppUsersByDeptAndBatch: getAppUsersByDeptAndBatch,
 
     //game score posting
     postNoteBirdScore: postNoteBirdScore,

@@ -163,6 +163,7 @@ let initWebRoutes = (app) => {
     router.post("/users/app/id",jsonParser,apiController.getAppUsersById);
     router.post("/users/app/dept",jsonParser,apiController.getAppUsersByDept);
     router.post("/users/app/batch",jsonParser,apiController.getAppUsersByBatch);
+    router.post("/users/app/batch_dept",jsonParser,apiController.getAppUsersByDeptAndBatch);
 
     //err posting
     router.post("/logs/err",jsonParser,apiController.postNewErrors);
