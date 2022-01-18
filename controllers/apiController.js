@@ -1584,7 +1584,7 @@ let postNoteDinoScores = (req, res) => {
 
     let {date, score, email, user_name} = req.body
 
-    db.query(handleGameScore("game_hof_notedino", date, score, email, user_name),(err, result)=> {
+    db.query(handleGameScore("game_hof_noteDino", date, score, email, user_name),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while posting game score")
