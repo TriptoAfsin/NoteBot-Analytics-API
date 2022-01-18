@@ -1588,7 +1588,10 @@ let postNoteDinoScores = (req, res) => {
         if(err){
             console.log(err)
             console.error("🔴 Error while posting game score")
-            return res.status(500).json({status: "🔴 Operation was unsuccessful!"})
+            return res.status(500).json({
+                status: "🔴 Operation was unsuccessful!",
+                err: err
+            })
         }
         console.log(req.body)
         console.log(`🟢 Game score insertion was successful`)
