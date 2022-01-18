@@ -62,9 +62,11 @@ let apiStatus = {
         "/users",
         "/missed",
         "/notes",
-        "/games/notebird"
+        "/games/notebird",
+        "/games/notedino"
       ],
-    DB_Connection_Status: false
+    DB_Connection_Status: false,
+    mode: "develop"
 }
 
 //API Intro Page
