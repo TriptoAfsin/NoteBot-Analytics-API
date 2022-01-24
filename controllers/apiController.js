@@ -1649,7 +1649,7 @@ let postNoteDinoScores = (req, res) => {
 
 //game data getting(notedino)
 let getNoteDinoHof = (req, res) => {
-    db.query(getTopScoreFromTable("game_hof_notedino",10),(err, result)=> {
+    db.query(getTopScoreFromTable("game_hof_noteDino",10),(err, result)=> {
         if(err){
             console.log(err)
             console.error("🔴 Error while fetching hof")
