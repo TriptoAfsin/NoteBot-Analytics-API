@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
 //importing web routes
 const initWebRoutes = require('./routes/web');
@@ -14,6 +15,9 @@ const port = process.env.PORT
 
 //init web routes
 initWebRoutes(app);
+
+//cors middleware
+app.use(cors());
 
 
 app.listen(port, () => {
