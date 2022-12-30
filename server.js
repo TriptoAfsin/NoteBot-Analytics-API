@@ -16,25 +16,21 @@ const port = process.env.PORT;
 initWebRoutes(app);
 
 const corsOpts = {
-  origin: '*',
+  origin: "*",
 
-  methods: [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'HEAD'
-  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "HEAD"],
 
-  allowedHeaders: [
-    'Content-Type',
-  ],
+  allowedHeaders: ["Content-Type"],
 };
 
 //cors middleware
-app.use(
-  cors(corsOpts)
-);
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+}, cors(corsOpts));
 
 app.listen(port, () => {
   console.log(`🔵 Listening on Port: ${port}`);
