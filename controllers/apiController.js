@@ -1129,6 +1129,8 @@ let postMissedWords = (req, res) => {
 
 //new user info insertion
 let postNewAppUsersInfo = (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
 
     let imgUrl
 
