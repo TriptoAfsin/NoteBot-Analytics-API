@@ -15,12 +15,25 @@ const port = process.env.PORT;
 //init web routes
 initWebRoutes(app);
 
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'HEAD'
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
 //cors middleware
 app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
+  cors(corsOpts)
 );
 
 app.listen(port, () => {
