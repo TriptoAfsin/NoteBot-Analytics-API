@@ -8,13 +8,9 @@ const cors = require("cors");
 const initWebRoutes = require("./routes/web");
 //importing api controller
 const apiController = require("./controllers/apiController");
-const initWebRoutes = require("./routes/web");
 
 //port
 const port = process.env.PORT;
-
-//init web routes
-initWebRoutes(app);
 
 const corsOpts = {
   origin: "*",
