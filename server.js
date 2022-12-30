@@ -8,6 +8,7 @@ const cors = require("cors");
 const initWebRoutes = require("./routes/web");
 //importing api controller
 const apiController = require("./controllers/apiController");
+const initWebRoutes = require("./routes/web");
 
 //port
 const port = process.env.PORT;
@@ -31,6 +32,9 @@ app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 }, cors(corsOpts));
+
+//init web routes
+initWebRoutes(app);
 
 app.listen(port, () => {
   console.log(`🔵 Listening on Port: ${port}`);
