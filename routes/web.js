@@ -24,6 +24,8 @@ let initWebRoutes = app => {
   router.get("/thesis/products", apiController.productsThesis);
   router.get("/thesis/search/products", apiController.productsSearch);
   router.get("/thesis/products/:id", apiController.productById);
+  router.get("/thesis/cells/:id", apiController.cellById);
+  router.get("/thesis/cells/product/:id", apiController.findProdCells);
   router.post(
     "/thesis/transactions",
     jsonParser,

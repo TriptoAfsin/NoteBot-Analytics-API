@@ -51,6 +51,14 @@ let getProductsById = prodId => {
   return `SELECT * FROM products_thesis WHERE product_id = ${prodId}`;
 };
 
+let getCellInfo = cellId => {
+  return `SELECT * FROM transactions_table_thesis WHERE cell_id = ${cellId}`;
+};
+
+let getProdCells = prodId => {
+  return `SELECT * FROM transactions_table_thesis WHERE product_id = ${cellId}`;
+};
+
 let searchProducts = data => {
   let cleanObj = JSON.parse(JSON.stringify(data));
 
@@ -388,6 +396,47 @@ let productById = (req, res) => {
     console.log(`🟢 product data fetching was successful`);
     return res.status(200).json({
       product: result, //returns all from subnamedb
+    }); //this will return a json array
+  });
+};
+
+let cellById = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ status: "bad request, missing id" });
+  }
+  db.query(getCellInfo(parseInt(id)), (err, result) => {
+    if (err) {
+      console.log(err);
+      console.error("🔴 Error while retrieving cell info");
+      return res.status(500).json({ status: "🔴 Internal Server Error" });
+    }
+    console.log(`🟢 cell data fetching was successful`);
+    return res.status(200).json({
+      cellInfo: {
+        cellId: id,
+        products: result,
+      }, //returns all from subnamedb
+    }); //this will return a json array
+  });
+};
+
+let findProdCells = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ status: "bad request, missing id" });
+  }
+  db.query(getProdCells(parseInt(id)), (err, result) => {
+    if (err) {
+      console.log(err);
+      console.error("🔴 Error while retrieving cell info");
+      return res.status(500).json({ status: "🔴 Internal Server Error" });
+    }
+    console.log(`🟢 cell data fetching was successful`);
+    return res.status(200).json({
+      availableIn: [...new Set(result?.map(cell => cell?.cell_id))], //returns all from subnamedb
     }); //this will return a json array
   });
 };
@@ -2513,6 +2562,8 @@ module.exports = {
   postProductThesis: postProductThesis,
   putProduct: putProduct,
   putTransaction: putTransaction,
+  cellById: cellById,
+  findProdCells: findProdCells,
 
   //404
   notFound: notFound,
