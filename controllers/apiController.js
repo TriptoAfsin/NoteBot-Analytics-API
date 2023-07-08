@@ -39,23 +39,12 @@ let handleNewUserInfoQuery = (
   return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}', '${role}', '${imgUrl}')`;
 };
 
-let handleNewThesisInsertion = (
-  email,
-  uni_id,
-  batch,
-  dept,
-  role,
-  imgUrl = "false"
-) => {
-  return `INSERT INTO app_users VALUES(DEFAULT, '${email}', '${uni_id}', '${batch}', '${dept}', '${role}', '${imgUrl}')`;
-};
-
 let getAllThesisTransactions = () => {
-  return `SELECT * FROM 'transactions_table_thesis'`;
+  return `SELECT * FROM transactions_table_thesis`;
 };
 
 let getRacksInfo = () => {
-  return `SELECT * FROM 'single_rack_thesis'`;
+  return `SELECT * FROM single_rack_thesis`;
 };
 
 let insertNewThesisTransaction = (
@@ -65,7 +54,7 @@ let insertNewThesisTransaction = (
   action_type = "add",
   timestamp = Date.now()
 ) => {
-  return `INSERT INTO 'transactions_table_thesis' ('transaction_id', 'cell_id', 'product_id', 'qty', 'action_type', 'timestamp') VALUES (NULL, ${cell_id}, ${product_id}, ${qty}, ${action_type}, ${timestamp})`;
+  return `INSERT INTO transactions_table_thesis ('transaction_id', 'cell_id', 'product_id', 'qty', 'action_type', 'timestamp') VALUES (NULL, '${cell_id}', '${product_id}', '${qty}', '${action_type}', '${timestamp}')`;
 };
 
 let handleErrorQuery = (date, log, os, email) => {
