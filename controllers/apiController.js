@@ -52,7 +52,7 @@ let insertNewThesisTransaction = (
   product_id,
   qty,
   action_type = "add",
-  timestamp = Date.now()
+  timestamp = new Date()
 ) => {
   return `INSERT INTO transactions_table_thesis ('transaction_id', 'cell_id', 'product_id', 'qty', 'action_type', 'timestamp') VALUES (NULL, '${cell_id}', '${product_id}', '${qty}', '${action_type}', '${timestamp}')`;
 };
