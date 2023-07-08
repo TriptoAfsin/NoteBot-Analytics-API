@@ -178,7 +178,7 @@ let postTransaction = (req, res) => {
   if (!qty) {
     return res.status(400).json({ status: "bad request, missing qty" });
   }
-  if (!qtaction_typey) {
+  if (!action_type) {
     return res.status(400).json({ status: "bad request, missing action_type" });
   }
 
@@ -189,7 +189,7 @@ let postTransaction = (req, res) => {
         console.log(err);
         return res.status(500).json({ status: "🔴 Internal server error" });
       }
-      console.log(`🟢 Word insertion was successful`);
+      console.log(`🟢 Transaction insertion was successful`);
       return res.status(200).json({
         transaction: result,
         status: "🟢 Transaction insertion was successful", //returns all from subnamedb
