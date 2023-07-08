@@ -52,7 +52,10 @@ let insertNewThesisTransaction = (
   product_id,
   qty,
   action_type = "add",
-  timestamp = new Date().toISOString().slice(0, 19).replace("T", " ")
+  timestamp = `${new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ")}.000000`
 ) => {
   return `INSERT INTO transactions_table_thesis ('transaction_id', 'cell_id', 'product_id', 'qty', 'action_type', 'timestamp') VALUES (NULL, '${cell_id}', '${product_id}', '${qty}', '${action_type}', '${timestamp}')`;
 };
