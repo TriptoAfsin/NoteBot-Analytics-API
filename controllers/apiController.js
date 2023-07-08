@@ -464,8 +464,8 @@ let putProduct = (req, res) => {
       total_qty: total_qty ? total_qty : undefined,
       type: type ? type : undefined,
       color: color ? color : undefined,
-      name: name ? color : undefined,
-      po: po ? color : undefined,
+      name: name ? name : undefined,
+      po: po ? po : undefined,
       other_info: other_info ? other_info : undefined,
     }),
     (err, result) => {
