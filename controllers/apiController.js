@@ -51,14 +51,43 @@ let getProductsById = prodId => {
   return `SELECT * FROM products_thesis WHERE product_id = ${prodId}`;
 };
 
-let searchProducts = (
-  name = "",
-  color = "",
-  type = "",
-  style = "",
-  po = ""
-) => {
-  return `SELECT * FROM products_thesis WHERE name REGEXP '${name}' AND color REGEXP '${color}' AND type LIKE '${type}' AND style REGEXP '${style}' AND po LIKE '${po}'`;
+let searchProducts = data => {
+  let cleanObj = JSON.parse(JSON.stringify(data));
+
+  const isLastkey = (key, obj) => {
+    if (key === Object.keys(obj).slice(-1)[0]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  return `SELECT * FROM products_thesis WHERE ${
+    data?.name
+      ? `name REGEXP '${data?.name}'${
+          !isLastkey("name", cleanObj) ? "AND" : ""
+        }`
+      : ""
+  } ${
+    data?.color
+      ? `color REGEXP '${data?.color}'${
+          !isLastkey("color", cleanObj) ? "AND" : ""
+        }`
+      : ""
+  } ${
+    data?.type
+      ? `type LIKE '${data?.type}'${!isLastkey("type", cleanObj) ? "AND" : ""}`
+      : ""
+  } ${
+    data?.style
+      ? `style REGEXP '${data?.style}'${
+          !isLastkey("style", cleanObj) ? "AND" : ""
+        }`
+      : ""
+  } ${
+    data?.po
+      ? `po LIKE '${data?.po}'${!isLastkey("po", cleanObj) ? "AND" : ""}`
+      : ""
+  }`;
 };
 
 let getThesisTransactionById = (transactionId = 1) => {
@@ -367,13 +396,13 @@ let productsSearch = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { name, color, type, style, po } = req.query;
   db.query(
-    searchProducts(
-      name ? name : "",
-      color ? color : "",
-      type ? type : "",
-      style ? style : "",
-      po ? po : ""
-    ),
+    searchProducts({
+      name: name ? name : undefined,
+      color: color ? color : undefined,
+      type: type ? type : undefined,
+      style: style ? style : undefined,
+      po: po ? po : undefined,
+    }),
     (err, result) => {
       if (err) {
         console.log(err);
@@ -383,13 +412,13 @@ let productsSearch = (req, res) => {
       console.log(`🟢 product data fetching was successful`);
       return res.status(200).json({
         products: result,
-        sql: searchProducts(
-          name ? name : "",
-          color ? color : "",
-          type ? type : "",
-          style ? style : "",
-          po ? po : ""
-        ), //returns all from subnamedb
+        sql: searchProducts({
+          name: name ? name : undefined,
+          color: color ? color : undefined,
+          type: type ? type : undefined,
+          style: style ? style : undefined,
+          po: po ? po : undefined,
+        }), //returns all from subnamedb
       }); //this will return a json array
     }
   );
