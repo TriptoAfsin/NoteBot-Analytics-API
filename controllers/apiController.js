@@ -206,8 +206,8 @@ let transactionsThesis = (req, res) => {
 let transactionById = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { id } = req.params;
-  if (!id) {
-    return res.status(400).json({ status: "bad request, missing id" });
+  if (!id || validate.isInt(id)) {
+    return res.status(400).json({ status: "bad request, no or invalid id" });
   }
   db.query(getThesisTransactionById(parseInt(id)), (err, result) => {
     if (err) {
@@ -241,7 +241,7 @@ let productsThesis = (req, res) => {
 let productById = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { id } = req.params;
-  if (!id) {
+  if (!id || validate.isInt(id)) {
     return res.status(400).json({ status: "bad request, missing id" });
   }
   db.query(getProductsById(parseInt(id)), (err, result) => {
