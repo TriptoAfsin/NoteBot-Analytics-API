@@ -115,14 +115,41 @@ let showAllFromTable = tableName => {
 };
 
 let updateProductById = (id, data) => {
+  const isLastkey = (key, obj) => {
+    if (key === Object.keys(obj).slice(-1)[0]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return `UPDATE products_thesis SET ${
-    data?.style ? `style = '${data?.style}',` : ""
-  }${data?.total_qty ? `total_qty = '${data?.total_qty}'` : ""},${
-    data?.type ? `type = '${data?.type}',` : ""
-  }${data?.color ? `color = '${data?.color}',` : ""},${
-    data?.name ? `name = '${data?.name}',` : ""
-  }${data?.po ? `po = '${data?.po}',` : ""}${
-    data?.other_info ? `other_info = '${data?.other_info}',` : ""
+    data?.style
+      ? `style = '${data?.style}${!isLastkey("style", data) ? "," : ""}'`
+      : ""
+  }${
+    data?.total_qty
+      ? `total_qty = '${data?.total_qty}${
+          !isLastkey("total_qty", data) ? "," : ""
+        }'`
+      : ""
+  }${
+    data?.type
+      ? `type = '${data?.type}'${!isLastkey("type", data) ? "," : ""}`
+      : ""
+  }${
+    data?.color
+      ? `color = '${data?.color}'${!isLastkey("color", data) ? "," : ""}`
+      : ""
+  }${
+    data?.name
+      ? `name = '${data?.name}'${!isLastkey("name", data) ? "," : ""}`
+      : ""
+  }${data?.po ? `po = '${data?.po}'${!isLastkey("po", data) ? "," : ""}` : ""}${
+    data?.other_info
+      ? `other_info = '${data?.other_info}'${
+          !isLastkey("other_info", data) ? "," : ""
+        }`
+      : ""
   } WHERE products_thesis.product_id = ${id}`;
 };
 
