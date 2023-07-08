@@ -382,7 +382,14 @@ let productsSearch = (req, res) => {
       }
       console.log(`🟢 product data fetching was successful`);
       return res.status(200).json({
-        products: result, //returns all from subnamedb
+        products: result,
+        sql: searchProducts(
+          name ? name : "",
+          color ? color : "",
+          type ? type : "",
+          style ? style : "",
+          po ? po : ""
+        ), //returns all from subnamedb
       }); //this will return a json array
     }
   );
