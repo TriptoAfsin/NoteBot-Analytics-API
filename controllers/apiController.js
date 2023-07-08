@@ -57,7 +57,7 @@ let insertNewThesisTransaction = (
     .slice(0, 19)
     .replace("T", " ")}.000000`
 ) => {
-  return `INSERT INTO transactions_table_thesis ('transaction_id', 'cell_id', 'product_id', 'qty', 'action_type', 'timestamp') VALUES (NULL, '${cell_id}', '${product_id}', '${qty}', '${action_type}', '${timestamp}')`;
+  return `INSERT INTO transactions_table_thesis (transaction_id, cell_id, product_id, qty, action_type, timestamp) VALUES (NULL, ${cell_id}, ${product_id}, ${qty}, '${action_type}', '${timestamp}')`;
 };
 
 let handleErrorQuery = (date, log, os, email) => {
