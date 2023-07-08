@@ -114,6 +114,32 @@ let showAllFromTable = tableName => {
   return `SELECT * FROM ${tableName}`;
 };
 
+let updateProductById = (id, data) => {
+  return `UPDATE products_thesis SET ${
+    data?.style ? `style = '${data?.style}'` : ""
+  },${data?.total_qty ? `total_qty = '${data?.total_qty}'` : ""},${
+    data?.type ? `type = '${data?.type}'` : ""
+  },${data?.color ? `color = '${data?.color}'` : ""},${
+    data?.name ? `name = '${data?.name}'` : ""
+  },${data?.po ? `po = '${data?.po}'` : ""},${
+    data?.other_info ? `other_info = '${data?.other_info}'` : ""
+  } WHERE products_thesis.product_id = ${id}`;
+};
+
+let updateTransactionById = (id, data) => {
+  return `UPDATE transactions_table_thesis SET cell_id = '${
+    data?.cell_id
+  }',product_id = '${data?.product_id}', qty = '${data?.qty}', action_type = '${
+    data?.action_type
+  }', timestamp = '${new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace(
+      "T",
+      " "
+    )}.000000}' WHERE transactions_table_thesis.transaction_id = ${id}`;
+};
+
 let handleUserIncrementQuery = () => {
   return `UPDATE new_user SET user_count = user_count + 1 WHERE id = 1`;
 };
@@ -206,7 +232,7 @@ let transactionsThesis = (req, res) => {
 let transactionById = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { id } = req.params;
-  if (!id || validate.isInt(id)) {
+  if (!id || !validate.isInt(id)) {
     return res.status(400).json({ status: "bad request, no or invalid id" });
   }
   db.query(getThesisTransactionById(parseInt(id)), (err, result) => {
@@ -241,7 +267,7 @@ let productsThesis = (req, res) => {
 let productById = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   const { id } = req.params;
-  if (!id || validate.isInt(id)) {
+  if (!id || !validate.isInt(id)) {
     return res.status(400).json({ status: "bad request, missing id" });
   }
   db.query(getProductsById(parseInt(id)), (err, result) => {
@@ -316,6 +342,37 @@ let postTransaction = (req, res) => {
   );
 };
 
+let putTransaction = (req, res) => {
+  console.log(req.body);
+  let { id } = req.params;
+  let { cell_id, product_id, qty, action_type } = req.body;
+  if (!id) {
+    return res.status(400).json({ status: "bad request, missing id" });
+  }
+
+  db.query(
+    updateTransactionById(parseInt(id), {
+      cell_id: cell_id ? cell_id : undefined,
+      product_id: product_id ? product_id : undefined,
+      qty: qty ? qty : undefined,
+      action_type: action_type ? action_type : undefined,
+    }),
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res
+          .status(500)
+          .json({ status: "🔴 Internal server error", msg: err });
+      }
+      console.log(`🟢 Transaction update was successful`);
+      return res.status(200).json({
+        transaction: result,
+        status: "🟢 Transaction update was successful", //returns all from subnamedb
+      }); //this will return a json array
+    }
+  );
+};
+
 let postProductThesis = (req, res) => {
   console.log(req.body);
   let { name, color, type, style, total_qty, po, other_info } = req.body;
@@ -359,6 +416,42 @@ let postProductThesis = (req, res) => {
       return res.status(200).json({
         product: result,
         status: "🟢 Product insertion was successful", //returns all from subnamedb
+      }); //this will return a json array
+    }
+  );
+};
+
+let putProduct = (req, res) => {
+  console.log(req.body);
+  let { id } = req.params;
+  let { style, total_qty, type, color, name, po, other_info } = req.body;
+  if (!id || !validate?.isInt(id)) {
+    return res
+      .status(400)
+      .json({ status: "bad request, missing or invalid id" });
+  }
+
+  db.query(
+    updateProductById(parseInt(id), {
+      style: style ? style : undefined,
+      total_qty: total_qty ? total_qty : undefined,
+      type: type ? type : undefined,
+      color: color ? color : undefined,
+      name: name ? color : undefined,
+      po: po ? color : undefined,
+      other_info: other_info ? other_info : undefined,
+    }),
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res
+          .status(500)
+          .json({ status: "🔴 Internal server error", msg: err });
+      }
+      console.log(`🟢 Product update was successful`);
+      return res.status(200).json({
+        transaction: result,
+        status: "🟢 Product update was successful", //returns all from subnamedb
       }); //this will return a json array
     }
   );
@@ -2298,6 +2391,8 @@ module.exports = {
   productById: productById,
   productsSearch: productsSearch,
   postProductThesis: postProductThesis,
+  putProduct: putProduct,
+  putTransaction: putTransaction,
 
   //404
   notFound: notFound,

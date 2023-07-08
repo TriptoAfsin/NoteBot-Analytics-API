@@ -29,7 +29,13 @@ let initWebRoutes = app => {
     jsonParser,
     apiController.postTransaction
   );
+  router.put(
+    "/thesis/transactions/:id",
+    jsonParser,
+    apiController.putTransaction
+  );
   router.post("/thesis/products", jsonParser, apiController.postProductThesis);
+  router.put("/thesis/products/:id", jsonParser, apiController.putProduct);
 
   //all notes
   router.get("/notes", apiController.noteSubjects);
