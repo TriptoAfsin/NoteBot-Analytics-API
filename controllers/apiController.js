@@ -115,6 +115,8 @@ let showAllFromTable = tableName => {
 };
 
 let updateProductById = (id, data) => {
+  let cleanObj = JSON.parse(JSON.stringify(data));
+
   const isLastkey = (key, obj) => {
     if (key === Object.keys(obj).slice(-1)[0]) {
       return true;
@@ -122,32 +124,41 @@ let updateProductById = (id, data) => {
       return false;
     }
   };
+
   return `UPDATE products_thesis SET ${
-    data?.style
-      ? `style = '${data?.style}${!isLastkey("style", data) ? "," : ""}'`
+    cleanObj?.style
+      ? `style = '${cleanObj?.style}'${
+          !isLastkey("style", cleanObj) ? "," : ""
+        }`
       : ""
   }${
-    data?.total_qty
-      ? `total_qty = '${data?.total_qty}${
-          !isLastkey("total_qty", data) ? "," : ""
-        }'`
+    cleanObj?.total_qty
+      ? `total_qty = '${cleanObj?.total_qty}'${
+          !isLastkey("total_qty", cleanObj) ? "," : ""
+        }`
       : ""
   }${
-    data?.type
-      ? `type = '${data?.type}'${!isLastkey("type", data) ? "," : ""}`
+    cleanObj?.type
+      ? `type = '${cleanObj?.type}'${!isLastkey("type", cleanObj) ? "," : ""}`
       : ""
   }${
-    data?.color
-      ? `color = '${data?.color}'${!isLastkey("color", data) ? "," : ""}`
+    cleanObj?.color
+      ? `color = '${cleanObj?.color}'${
+          !isLastkey("color", cleanObj) ? "," : ""
+        }`
       : ""
   }${
-    data?.name
-      ? `name = '${data?.name}'${!isLastkey("name", data) ? "," : ""}`
+    cleanObj?.name
+      ? `name = '${cleanObj?.name}'${!isLastkey("name", cleanObj) ? "," : ""}`
       : ""
-  }${data?.po ? `po = '${data?.po}'${!isLastkey("po", data) ? "," : ""}` : ""}${
-    data?.other_info
-      ? `other_info = '${data?.other_info}'${
-          !isLastkey("other_info", data) ? "," : ""
+  }${
+    cleanObj?.po
+      ? `po = '${cleanObj?.po}'${!isLastkey("po", cleanObj) ? "," : ""}`
+      : ""
+  }${
+    cleanObj?.other_info
+      ? `other_info = '${cleanObj?.other_info}'${
+          !isLastkey("other_info", cleanObj) ? "," : ""
         }`
       : ""
   } WHERE products_thesis.product_id = ${id}`;
