@@ -211,13 +211,13 @@ let updateTransactionById = (id, data) => {
           !isLastkey("action_type", cleanObj) ? "," : ""
         }`
       : ""
-  }timestamp = '${new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace(
-      "T",
-      " "
-    )}.000000}' WHERE transactions_table_thesis.transaction_id = ${id}`;
+  }${
+    cleanObj?.timestamp
+      ? `timestamp = '${cleanObj?.timestamp}'${
+          !isLastkey("timestamp", cleanObj) ? "," : ""
+        }`
+      : ""
+  } WHERE transactions_table_thesis.transaction_id = ${id}`;
 };
 
 let handleUserIncrementQuery = () => {
@@ -436,6 +436,10 @@ let putTransaction = (req, res) => {
       product_id: product_id ? product_id : undefined,
       qty: qty ? qty : undefined,
       action_type: action_type ? action_type : undefined,
+      timestamp: `${new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ")}.000000}`,
     }),
     (err, result) => {
       if (err) {
