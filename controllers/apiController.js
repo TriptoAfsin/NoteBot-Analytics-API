@@ -117,11 +117,13 @@ let showAllFromTable = tableName => {
 let updateProductById = (id, data) => {
   return `UPDATE products_thesis SET ${
     data?.style ? `style = '${data?.style}'` : ""
-  },total_qty = '${data?.total_qty}',type = '${data?.type}',color = '${
-    data?.color
-  }',name = '${data?.name}', po = '${data?.po}',other_info = '${
-    data?.other_info
-  }' WHERE products_thesis.product_id = ${id}`;
+  },${data?.total_qty ? `total_qty = '${data?.total_qty}'` : ""},${
+    data?.type ? `type = '${data?.type}'` : ""
+  },${data?.color ? `color = '${data?.color}'` : ""},${
+    data?.name ? `name = '${data?.name}'` : ""
+  },${data?.po ? `po = '${data?.po}'` : ""},${
+    data?.other_info ? `other_info = '${data?.other_info}'` : ""
+  }, WHERE products_thesis.product_id = ${id}`;
 };
 
 let updateTransactionById = (id, data) => {
