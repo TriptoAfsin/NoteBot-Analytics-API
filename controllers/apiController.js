@@ -56,7 +56,7 @@ let getCellInfo = cellId => {
 };
 
 let getProdCells = prodId => {
-  return `SELECT * FROM transactions_table_thesis WHERE product_id = ${cellId}`;
+  return `SELECT * FROM transactions_table_thesis WHERE product_id = ${prodId}`;
 };
 
 let searchProducts = data => {
@@ -432,11 +432,13 @@ let findProdCells = (req, res) => {
     if (err) {
       console.log(err);
       console.error("🔴 Error while retrieving cell info");
-      return res.status(500).json({ status: "🔴 Internal Server Error" });
+      return res
+        .status(500)
+        .json({ status: "🔴 Internal Server Error", msg: err });
     }
-    console.log(`🟢 cell data fetching was successful`);
+    console.log(`🟢 prod data fetching was successful`);
     return res.status(200).json({
-      availableIn: [...new Set(result?.map(cell => cell?.cell_id))], //returns all from subnamedb
+      availableIn: [...new Set(result?.map(cell => cell?.cell_id))], //[...new Set(result?.map(cell => cell?.cell_id))]
     }); //this will return a json array
   });
 };
