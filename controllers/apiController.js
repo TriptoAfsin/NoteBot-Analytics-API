@@ -187,7 +187,9 @@ let postTransaction = (req, res) => {
     (err, result) => {
       if (err) {
         console.log(err);
-        return res.status(500).json({ status: "🔴 Internal server error" });
+        return res
+          .status(500)
+          .json({ status: "🔴 Internal server error", msg: err });
       }
       console.log(`🟢 Transaction insertion was successful`);
       return res.status(200).json({
