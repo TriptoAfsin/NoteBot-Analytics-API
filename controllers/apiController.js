@@ -43,8 +43,42 @@ let getAllThesisTransactions = () => {
   return `SELECT * FROM transactions_table_thesis`;
 };
 
+let getAllProducts = () => {
+  return `SELECT * FROM products_thesis`;
+};
+
+let getProductsById = prodId => {
+  return `SELECT * FROM products_thesis WHERE product_id = ${prodId}`;
+};
+
+let searchProducts = (
+  name = "",
+  color = "",
+  type = "",
+  style = "",
+  po = ""
+) => {
+  return `SELECT * FROM products_thesis WHERE name REGEXP '${name}' AND color REGEXP '${color}' AND type LIKE '${type}' AND style REGEXP '${style}' AND po LIKE '${po}'`;
+};
+
+let getThesisTransactionById = (transactionId = 1) => {
+  return `SELECT * FROM transactions_table_thesis  WHERE transaction_id = ${transactionId}`;
+};
+
 let getRacksInfo = () => {
   return `SELECT * FROM single_rack_thesis`;
+};
+
+let insertNewThesisProduct = (
+  name,
+  color,
+  type = "Raw Materials",
+  style,
+  total_qty,
+  po,
+  other_info = ""
+) => {
+  return `INSERT INTO products_thesis (product_id, name, color, type, total_qty, style, po, other_info) VALUES (NULL, '${name}', '${color}', '${type}', '${total_qty}', '${style}', '${po}', '${other_info}')`;
 };
 
 let insertNewThesisTransaction = (
@@ -153,7 +187,7 @@ let racksInfo = (req, res) => {
   });
 };
 
-//get rack info
+//get all transaction
 let transactionsThesis = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   db.query(getAllThesisTransactions(), (err, result) => {
@@ -167,6 +201,85 @@ let transactionsThesis = (req, res) => {
       transactions: result, //returns all from subnamedb
     }); //this will return a json array
   });
+};
+
+let transactionById = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({ status: "bad request, missing id" });
+  }
+  db.query(getThesisTransactionById(id), (err, result) => {
+    if (err) {
+      console.log(err);
+      console.error("🔴 Error while retrieving transaction");
+      return res.status(500).json({ status: "🔴 Internal Server Error" });
+    }
+    console.log(`🟢 transaction data fetching was successful`);
+    return res.status(200).json({
+      transaction: result, //returns all from subnamedb
+    }); //this will return a json array
+  });
+};
+
+//get all products
+let productsThesis = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  db.query(getAllProducts(), (err, result) => {
+    if (err) {
+      console.log(err);
+      console.error("🔴 Error while retrieving products");
+      return res.status(500).json({ status: "🔴 Internal Server Error" });
+    }
+    console.log(`🟢 products data fetching was successful`);
+    return res.status(200).json({
+      products: result, //returns all from subnamedb
+    }); //this will return a json array
+  });
+};
+
+let productById = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({ status: "bad request, missing id" });
+  }
+  db.query(getProductsById(id), (err, result) => {
+    if (err) {
+      console.log(err);
+      console.error("🔴 Error while retrieving product");
+      return res.status(500).json({ status: "🔴 Internal Server Error" });
+    }
+    console.log(`🟢 product data fetching was successful`);
+    return res.status(200).json({
+      product: result, //returns all from subnamedb
+    }); //this will return a json array
+  });
+};
+
+let productsSearch = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  const { name, color, type, style, po } = req.query;
+  db.query(
+    searchProducts(
+      name ? name : "",
+      color ? color : "",
+      type ? type : "",
+      style ? style : "",
+      po ? po : ""
+    ),
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        console.error("🔴 Error while retrieving product");
+        return res.status(500).json({ status: "🔴 Internal Server Error" });
+      }
+      console.log(`🟢 product data fetching was successful`);
+      return res.status(200).json({
+        products: result, //returns all from subnamedb
+      }); //this will return a json array
+    }
+  );
 };
 
 let postTransaction = (req, res) => {
@@ -198,6 +311,54 @@ let postTransaction = (req, res) => {
       return res.status(200).json({
         transaction: result,
         status: "🟢 Transaction insertion was successful", //returns all from subnamedb
+      }); //this will return a json array
+    }
+  );
+};
+
+let postProductThesis = (req, res) => {
+  console.log(req.body);
+  let { name, color, type, style, total_qty, po, other_info } = req.body;
+  if (!name) {
+    return res.status(400).json({ status: "bad request, missing name" });
+  }
+  if (!color) {
+    return res.status(400).json({ status: "bad request, missing color" });
+  }
+  if (!type) {
+    return res.status(400).json({ status: "bad request, missing type" });
+  }
+  if (!style) {
+    return res.status(400).json({ status: "bad request, missing style" });
+  }
+  if (!total_qty) {
+    return res.status(400).json({ status: "bad request, missing total_qty" });
+  }
+  if (!po) {
+    return res.status(400).json({ status: "bad request, missing po" });
+  }
+
+  db.query(
+    insertNewThesisProduct(
+      name,
+      color,
+      type,
+      style,
+      total_qty,
+      po,
+      other_info ? other_info : ""
+    ),
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res
+          .status(500)
+          .json({ status: "🔴 Internal server error", msg: err });
+      }
+      console.log(`🟢 Product insertion was successful`);
+      return res.status(200).json({
+        product: result,
+        status: "🟢 Product insertion was successful", //returns all from subnamedb
       }); //this will return a json array
     }
   );
@@ -2132,6 +2293,11 @@ module.exports = {
   postTransaction: postTransaction,
   transactionsThesis: transactionsThesis,
   racksInfo: racksInfo,
+  transactionById: transactionById,
+  productsThesis: productsThesis,
+  productById: productById,
+  productsSearch: productsSearch,
+  postProductThesis: postProductThesis,
 
   //404
   notFound: notFound,

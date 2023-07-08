@@ -20,11 +20,16 @@ let initWebRoutes = app => {
   //thesis
   router.get("/thesis/racks", apiController.racksInfo);
   router.get("/thesis/transactions", apiController.transactionsThesis);
+  router.get("/thesis/transactions/:id", apiController.transactionById);
+  router.get("/thesis/products", apiController.productsThesis);
+  router.get("/thesis/search/products", apiController.productsSearch);
+  router.get("/thesis/products/:id", apiController.productById);
   router.post(
     "/thesis/transactions",
     jsonParser,
     apiController.postTransaction
   );
+  router.post("/thesis/products", jsonParser, apiController.postProductThesis);
 
   //all notes
   router.get("/notes", apiController.noteSubjects);
