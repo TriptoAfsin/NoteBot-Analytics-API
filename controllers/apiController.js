@@ -164,12 +164,54 @@ let updateProductById = (id, data) => {
   } WHERE products_thesis.product_id = ${id}`;
 };
 
+// let updateTransactionById = (id, data) => {
+//   return `UPDATE transactions_table_thesis SET cell_id = '${
+//     data?.cell_id
+//   }',product_id = '${data?.product_id}', qty = '${data?.qty}', action_type = '${
+//     data?.action_type
+//   }', timestamp = '${new Date()
+//     .toISOString()
+//     .slice(0, 19)
+//     .replace(
+//       "T",
+//       " "
+//     )}.000000}' WHERE transactions_table_thesis.transaction_id = ${id}`;
+// };
+
 let updateTransactionById = (id, data) => {
-  return `UPDATE transactions_table_thesis SET cell_id = '${
-    data?.cell_id
-  }',product_id = '${data?.product_id}', qty = '${data?.qty}', action_type = '${
-    data?.action_type
-  }', timestamp = '${new Date()
+  let cleanObj = JSON.parse(JSON.stringify(data));
+
+  const isLastkey = (key, obj) => {
+    if (key === Object.keys(obj).slice(-1)[0]) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  return `UPDATE transactions_table_thesis SET ${
+    cleanObj?.cell_id
+      ? `cell_id = '${cleanObj?.cell_id}'${
+          !isLastkey("cell_id", cleanObj) ? "," : ""
+        }`
+      : ""
+  }${
+    cleanObj?.product_id
+      ? `product_id = '${cleanObj?.product_id}'${
+          !isLastkey("product_id", cleanObj) ? "," : ""
+        }`
+      : ""
+  }${
+    cleanObj?.qty
+      ? `qty = '${cleanObj?.qty}'${!isLastkey("qty", cleanObj) ? "," : ""}`
+      : ""
+  }${
+    cleanObj?.action_type
+      ? `action_type = '${cleanObj?.action_type}'${
+          !isLastkey("action_type", cleanObj) ? "," : ""
+        }`
+      : ""
+  }timestamp = '${new Date()
     .toISOString()
     .slice(0, 19)
     .replace(
