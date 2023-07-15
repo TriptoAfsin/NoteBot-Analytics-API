@@ -594,8 +594,7 @@ let postProductThesis = (req, res) => {
 
 let putProduct = (req, res) => {
   console.log(req.body);
-  let { id } = req.params;
-  let { style, total_qty, type, color, name, po, other_info } = req.body;
+  let { style, total_qty, type, color, name, po, other_info, id } = req.body;
   if (!id) {
     return res
       .status(400)
