@@ -416,7 +416,7 @@ let cellById = (req, res) => {
     return res.status(200).json({
       cellInfo: {
         cellId: id,
-        products: result,
+        transactions: result,
       }, //returns all from subnamedb
     }); //this will return a json array
   });
