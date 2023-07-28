@@ -44,7 +44,7 @@ let getAllThesisTransactions = () => {
 };
 
 let getAllProducts = () => {
-  return `SELECT * FROM products_thesis`;
+  return `SELECT * FROM products_thesis ORDER BY products_thesis.product_id DESC`;
 };
 
 let getProductsById = prodId => {
