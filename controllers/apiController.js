@@ -424,7 +424,7 @@ let cellById = (req, res) => {
 
 let findProdCells = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  const { id } = req.params;
+  const { id } = req.body;
   if (!id) {
     return res.status(400).json({ status: "bad request, missing id" });
   }
