@@ -458,7 +458,7 @@ let productsSearch = (req, res) => {
       if (err) {
         console.log(err);
         console.error("🔴 Error while retrieving product");
-        return res.status(500).json({ status: "🔴 Internal Server Error" });
+        return res.status(500).json({ status: "🔴 Internal Server Error", err:  err});
       }
       console.log(`🟢 product data fetching was successful`);
       return res.status(200).json({
