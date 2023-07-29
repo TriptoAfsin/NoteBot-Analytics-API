@@ -445,7 +445,7 @@ let findProdCells = (req, res) => {
 
 let productsSearch = (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
-  const { name, color, type, style, po } = req.query;
+  const { name, color, type, style, po } = req.body;
   db.query(
     searchProducts({
       name: name ? name : undefined,
