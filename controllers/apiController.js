@@ -448,11 +448,11 @@ let productsSearch = (req, res) => {
   const { name, color, type, style, po } = req.body;
   db.query(
     searchProducts({
-      name: name ? name : '',
-      color: color ? color : '',
-      type: type ? type : '',
-      style: style ? style : '',
-      po: po ? po : '',
+      name: name ? name : undefined,
+      color: color ? color : undefined,
+      type: type ? type : undefined,
+      style: style ? style : undefined,
+      po: po ? po : undefined,
     }),
     (err, result) => {
       if (err) {
@@ -464,11 +464,11 @@ let productsSearch = (req, res) => {
       return res.status(200).json({
         products: result,
         sql: searchProducts({
-          name: name ? name : '',
-          color: color ? color : '',
-          type: type ? type : '',
-          style: style ? style : '',
-          po: po ? po : '',
+          name: name ? name : undefined,
+          color: color ? color : undefined,
+          type: type ? type : undefined,
+          style: style ? style : undefined,
+          po: po ? po : undefined,
         }), //returns all from subnamedb
       }); //this will return a json array
     }
