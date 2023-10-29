@@ -288,7 +288,7 @@ let dbConfig = {
   database: process.env.DB_NAME,
 };
 
-let db = mySql.createConnection(dbConfig);
+let db = mySql.createConnection(process.env.DATABASE_URL);
 
 db.connect(err => {
   if (err) {
