@@ -282,7 +282,7 @@ let apiIntro = (req, res) => {
 
 //connecting to db
 let dbConfig = {
-  host: "localhost",
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_USER_PASS,
   database: process.env.DB_NAME,
