@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mySql = require("mysql");
+const mySql = require("mysql2");
 const fs = require("fs");
 let validate = require("is-it-dash");
 
