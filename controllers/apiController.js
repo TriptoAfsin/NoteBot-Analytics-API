@@ -289,7 +289,7 @@ let dbConfig = {
   port: process.env.DB_PORT,
 };
 
-let db = mySql.createConnection(process.env.DATABASE_URL);
+let db = mySql.createConnection(dbConfig);
 
 db.connect(err => {
   if (err) {
