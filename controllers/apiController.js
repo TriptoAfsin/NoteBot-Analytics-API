@@ -293,7 +293,7 @@ let db = mySql.createConnection(dbConfig);
 
 db.connect(err => {
   if (err) {
-    return console.error("🔴 Error occurred while connecting to DB");
+    return console.error("🔴 Error occurred while connecting to DB", err);
   }
   apiStatus.DB_Connection_Status = true;
   console.log("🟢 Connected to DB");
