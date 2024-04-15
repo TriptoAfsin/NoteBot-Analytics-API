@@ -286,6 +286,7 @@ let dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_USER_PASS,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 };
 
 let db = mySql.createConnection(process.env.DATABASE_URL);
