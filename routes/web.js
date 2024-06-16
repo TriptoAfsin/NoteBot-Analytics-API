@@ -210,6 +210,10 @@ let initWebRoutes = app => {
   //users
   router.post("/users", apiController.incrementUserCount);
 
+  //daily_report
+  router.get("/daily_report", apiController.getDailyReport);
+  router.post("/daily_report", jsonParser,apiController.postDailyReport);
+
   //404 route
   router.get("*", apiController.notFound);
 

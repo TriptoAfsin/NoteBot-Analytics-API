@@ -2439,6 +2439,89 @@ let labsLss = (req, res) => {
   });
 };
 
+//daily_report
+const getDailyReport = (req, res) => {
+  const platform = req.query.platform;
+  
+  // Build the SQL query based on whether a platform filter is provided
+  let selectQuery = `SELECT * FROM bot_daily_report`;
+  const queryParams = [];
+
+  if (platform) {
+    selectQuery += ` WHERE platform = ?`;
+    queryParams.push(platform);
+  }
+
+  db.query(selectQuery, queryParams, (err, results) => {
+    if (err) {
+      console.error("🔴 Error while fetching daily reports:", err);
+      return res.status(500).json({ status: "🔴 Operation was unsuccessful!" });
+    }
+
+    // Return the results as a JSON array
+    return res.status(200).json({
+      status: "🟢 Operation was successful",
+      data: results,
+    });
+  });
+};
+
+
+const postDailyReport = (req, res) => {
+  if (!req.query.adminKey || req.query.adminKey !== process.env.AUTH_KEY) {
+    return res.status(401).json({
+      Error: "🔴 Unauthorized Access !",
+    });
+  }
+
+  const VALID_PLATFORMS = ["bot", "app"];
+
+  if (!req?.body?.platform || !VALID_PLATFORMS.includes(req.body.platform)) {
+    return res.status(400).json({ status: "🔴 Bad Requests" });
+  }
+
+  const platform = req.body.platform;
+  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+
+  // Query to check if there's already an entry for today and platform
+  const checkQuery = `SELECT count FROM bot_daily_report WHERE date = ? AND platform = ?`;
+  db.query(checkQuery, [currentDate, platform], (err, results) => {
+    if (err) {
+      console.error("🔴 Error while checking existing log:", err);
+      return res.status(500).json({ status: "🔴 Error while checking existing log!" });
+    }
+
+    if (results.length > 0) {
+      // Entry exists, so update the count
+      const updateQuery = `UPDATE bot_daily_report SET count = count + 1 WHERE date = ? AND platform = ?`;
+      db.query(updateQuery, [currentDate, platform], (err, result) => {
+        if (err) {
+          console.error("🔴 Error while updating daily api count:", err);
+          return res.status(500).json({ status: "🔴 Error while updating daily api count!" });
+        }
+        console.log(`🟢 Incrementing api call count was successful`);
+        return res.status(200).json({
+          status: "🟢 Incrementing api call count was successful",
+        });
+      });
+    } else {
+      // Entry does not exist, so insert a new one with count 1
+      const insertQuery = `INSERT INTO bot_daily_report (date, count, platform) VALUES (?, 1, ?)`;
+      db.query(insertQuery, [currentDate, platform], (err, result) => {
+        if (err) {
+          console.error("🔴 Error while inserting new log:", err);
+          return res.status(500).json({ status: "🔴 Operation was unsuccessful!" });
+        }
+        console.log(`🟢 Creating new log entry was successful`);
+        return res.status(200).json({
+          status: "🟢 Creating new log entry was successful",
+        });
+      });
+    }
+  });
+};
+
+
 //404 Route
 let notFound = (req, res) => {
   return res.status(404).json({
@@ -2453,6 +2536,9 @@ module.exports = {
 
   noteSubjects: noteSubjects,
   topNoteSubjects: topNoteSubjects,
+
+  getDailyReport: getDailyReport,
+  postDailyReport: postDailyReport,
 
   notesMath1: notesMath1,
   notesMath2: notesMath2,
